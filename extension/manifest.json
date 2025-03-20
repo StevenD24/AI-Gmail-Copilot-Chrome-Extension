@@ -3,8 +3,7 @@
   "name": "Gmail Copilot",
   "version": "1.0.0",
   "description": "Gmail Copilot extension for Chrome",
-  "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png"
+  "action": {
+    "default_popup": "index.html"
   }
 }
