@@ -12,45 +12,105 @@
 }
 
 .gmail-copilot-btn {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
     background-color: #0078d4;
+    color: white;
     border: none;
+    border-radius: 6px;
+    padding: 12px 16px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: center;
+    min-width: 180px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 
 .gmail-copilot-btn:hover {
-    transform: scale(1.1);
+    transform: translateY(-1px);
     background-color: #006cbd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.gmail-copilot-btn img {
+.gmail-copilot-btn.disabled {
+    background-color: #666;
+    cursor: help;
+}
+
+.gmail-copilot-btn.circular {
+    min-width: unset;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 12px;
+    position: relative;
+}
+
+.gmail-copilot-btn.circular .btn-content {
+    justify-content: center;
+}
+
+.gmail-copilot-btn.circular.disabled {
+    background-color: #666;
+}
+
+.gmail-copilot-btn.circular.disabled::before {
+    content: attr(title);
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.gmail-copilot-btn.circular.disabled::after {
+    content: '';
+    position: absolute;
+    right: calc(100% + 2px);
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: transparent transparent transparent #333;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-in-out;
+}
+
+.gmail-copilot-btn.circular.disabled:hover::before,
+.gmail-copilot-btn.circular.disabled:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.btn-content img {
     width: 24px;
     height: 24px;
 }
 
-/* Message UI for non-email pages */
-.gmail-copilot-message {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 9999;
+.btn-content span {
+    font-size: 14px;
+    font-weight: 500;
 }
 
-.gmail-copilot-message-content {
-    background-color: #f8f9fa;
-    padding: 12px 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #dee2e6;
-    color: #495057;
-    font-size: 14px;
+/* Message UI for non-email pages */
+.gmail-copilot-message {
+    display: none;
 }
 
 /* Response UI Styles */
