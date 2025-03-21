@@ -173,7 +173,12 @@ function createFloatingButton() {
       loadingUI.remove();
   
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        if (response.status === 500 && errorData.detail?.includes('OpenAI')) {
+          throw new Error('LLM request failed');
+        } else {
+          throw new Error(`Request failed: ${errorData.detail || response.statusText}`);
+        }
       }
   
       const data = await response.json();
@@ -202,20 +207,40 @@ function createFloatingButton() {
     closeBtn.addEventListener('click', () => responseUI.remove());
   }
   
-  function showError(message) {
+  function showError(message, type = 'generic') {
     const errorUI = document.createElement('div');
-    errorUI.className = 'gmail-copilot-error';
+    errorUI.className = `gmail-copilot-error ${type}`;
+    
+    let displayMessage = message;
+    // Handle specific error types
+    if (message.includes('OpenAI') || message.includes('LLM')) {
+        displayMessage = 'LLM request failed—please try again';
+        type = 'llm-error';
+    } else if (message.includes('fetch') || message.includes('network')) {
+        displayMessage = 'Network error—please check your connection';
+        type = 'network-error';
+    }
+
     errorUI.innerHTML = `
-          <div class="gmail-copilot-error-content">
-              <p>${message}</p>
-              <button class="gmail-copilot-close">Close</button>
-          </div>
-      `;
+        <div class="gmail-copilot-error-content ${type}">
+            <p>${displayMessage}</p>
+            <button class="gmail-copilot-close">Close</button>
+        </div>
+    `;
     document.body.appendChild(errorUI);
-  
+
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+        errorUI.classList.add('fade-out');
+        setTimeout(() => errorUI.remove(), 500); // Remove after fade animation
+    }, 5000);
+
     // Add close button handler
     const closeBtn = errorUI.querySelector('.gmail-copilot-close');
-    closeBtn.addEventListener('click', () => errorUI.remove());
+    closeBtn.addEventListener('click', () => {
+        errorUI.classList.add('fade-out');
+        setTimeout(() => errorUI.remove(), 500);
+    });
   }
   
   // Check if we're on a detailed email page by verifying the presence of email content

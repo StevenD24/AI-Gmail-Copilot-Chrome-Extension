@@ -148,8 +148,9 @@
 }
 
 .gmail-copilot-response-content h3 {
-    margin: 16px 0 8px;
+    margin: 0 0 16px;
     color: #333;
+    font-size: 18px;
 }
 
 .gmail-copilot-response-content p {
@@ -157,6 +158,22 @@
     line-height: 1.5;
     color: #666;
     white-space: pre-wrap;
+}
+
+.gmail-copilot-response .gmail-copilot-close {
+    background-color: #0078d4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: background-color 0.2s ease-in-out;
+    display: block;
+}
+
+.gmail-copilot-response .gmail-copilot-close:hover {
+    background-color: #006cbd;
 }
 
 /* Modal UI Styles */
@@ -258,47 +275,76 @@
 /* Error UI Styles */
 .gmail-copilot-error {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 20px;
+    right: 20px;
     z-index: 10000;
+    animation: slideIn 0.3s ease-out;
 }
 
 .gmail-copilot-error-content {
-    background-color: white;
-    padding: 24px;
+    background: white;
     border-radius: 8px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left: 4px solid #dc3545;
+    min-width: 300px;
 }
 
-.gmail-copilot-error-content p {
-    margin: 16px 0;
-    color: #d32f2f;
-    font-weight: 500;
+.gmail-copilot-error-content.llm-error {
+    border-left-color: #f59e0b;
 }
 
-/* Close button styles */
-.gmail-copilot-close {
-    background-color: #0078d4;
-    color: white;
+.gmail-copilot-error-content.network-error {
+    border-left-color: #dc3545;
+}
+
+.gmail-copilot-error p {
+    margin: 0;
+    flex-grow: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.gmail-copilot-error .gmail-copilot-close {
+    background: transparent;
     border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 4px 8px;
     cursor: pointer;
-    margin-top: 16px;
-    transition: background-color 0.2s ease-in-out;
+    color: #666;
+    font-size: 12px;
 }
 
-.gmail-copilot-close:hover {
-    background-color: #006cbd;
+.gmail-copilot-error .gmail-copilot-close:hover {
+    color: #333;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
 }
 
 /* Loading UI Styles */

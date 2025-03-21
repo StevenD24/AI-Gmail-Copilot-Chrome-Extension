@@ -130,57 +130,71 @@ function createFloatingButton() {
   // Handle button click for both actions
   async function handleButtonClick(action) {
     try {
-      const emailContent = extractEmailContent();
-      if (!emailContent) {
-        showError('Could not extract email content');
-        return;
-      }
-  
-      const emailId = extractEmailId();
-      if (!emailId) {
-        showError('Could not extract email ID');
-        return;
-      }
-  
-      let instruction;
-      if (action === 'draft') {
-        instruction = await showInstructionModal();
-        if (instruction === null) return; // User cancelled
-      }
-  
-      // Show loading state immediately
-      const loadingUI = showLoading(
-        action === 'summarize' ? 'Generating summary...' : 'Drafting reply...'
-      );
-  
-      // Make API call
-      const response = await fetch(
-        `http://localhost:8000/api/v1/${action === 'summarize' ? 'summarize' : 'draft-reply'}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            thread_content: emailContent.body,
-            email_id: emailId,
-            instruction: instruction
-          })
+        // TEST ERROR MESSAGES - Comment out when done testing
+        if (action === 'summarize') {
+            showError('LLM request failed');
+            return;
+        } else if (action === 'draft') {
+            showError('Network error: Failed to connect to server');
+            return;
         }
-      );
+
+        const emailContent = extractEmailContent();
+        if (!emailContent) {
+            showError('Could not extract email content');
+            return;
+        }
   
-      // Remove loading state
-      loadingUI.remove();
+        const emailId = extractEmailId();
+        if (!emailId) {
+            showError('Could not extract email ID');
+            return;
+        }
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+        let instruction;
+        if (action === 'draft') {
+            instruction = await showInstructionModal();
+            if (instruction === null) return; // User cancelled
+        }
   
-      const data = await response.json();
-      showResponse(data.content, action);
+        // Show loading state immediately
+        const loadingUI = showLoading(
+            action === 'summarize' ? 'Generating summary...' : 'Drafting reply...'
+        );
+  
+        // Make API call
+        const response = await fetch(
+            `http://localhost:8000/api/v1/${action === 'summarize' ? 'summarize' : 'draft-reply'}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    thread_content: emailContent.body,
+                    email_id: emailId,
+                    instruction: instruction
+                })
+            }
+        );
+  
+        // Remove loading state
+        loadingUI.remove();
+  
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            if (response.status === 500 && errorData.detail?.includes('OpenAI')) {
+                throw new Error('LLM request failed');
+            } else {
+                throw new Error(`Request failed: ${errorData.detail || response.statusText}`);
+            }
+        }
+  
+        const data = await response.json();
+        showResponse(data.content, action);
     } catch (error) {
-      console.error('Error:', error);
-      showError(error.message);
+        console.error('Error:', error);
+        showError(error.message);
     }
   }
   
@@ -202,20 +216,40 @@ function createFloatingButton() {
     closeBtn.addEventListener('click', () => responseUI.remove());
   }
   
-  function showError(message) {
+  function showError(message, type = 'generic') {
     const errorUI = document.createElement('div');
-    errorUI.className = 'gmail-copilot-error';
+    errorUI.className = `gmail-copilot-error ${type}`;
+    
+    let displayMessage = message;
+    // Handle specific error types
+    if (message.includes('OpenAI') || message.includes('LLM')) {
+        displayMessage = 'LLM request failed—please try again';
+        type = 'llm-error';
+    } else if (message.includes('fetch') || message.includes('network')) {
+        displayMessage = 'Network error—please check your connection';
+        type = 'network-error';
+    }
+
     errorUI.innerHTML = `
-          <div class="gmail-copilot-error-content">
-              <p>${message}</p>
-              <button class="gmail-copilot-close">Close</button>
-          </div>
-      `;
+        <div class="gmail-copilot-error-content ${type}">
+            <p>${displayMessage}</p>
+            <button class="gmail-copilot-close">Close</button>
+        </div>
+    `;
     document.body.appendChild(errorUI);
-  
+
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+        errorUI.classList.add('fade-out');
+        setTimeout(() => errorUI.remove(), 500); // Remove after fade animation
+    }, 5000);
+
     // Add close button handler
     const closeBtn = errorUI.querySelector('.gmail-copilot-close');
-    closeBtn.addEventListener('click', () => errorUI.remove());
+    closeBtn.addEventListener('click', () => {
+        errorUI.classList.add('fade-out');
+        setTimeout(() => errorUI.remove(), 500);
+    });
   }
   
   // Check if we're on a detailed email page by verifying the presence of email content
