@@ -52,9 +52,18 @@ const draftIcon = `<svg width="48" height="48" viewBox="0 0 48 48" fill="none" x
     <path d="M42 30C42 31.0609 41.5786 32.0783 40.8284 32.8284C40.0783 33.5786 39.0609 34 38 34H14L6 42V10C6 8.93913 6.42143 7.92172 7.17157 7.17157C7.92172 6.42143 8.93913 6 10 6H38C39.0609 6 40.0783 6.42143 40.8284 7.17157C41.5786 7.92172 42 8.93913 42 10V30Z" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
+const copilotIcon = `<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="48" height="48" rx="8" fill="#0078d4"/>
+    <!-- Left bracket -->
+    <path d="M20 12L14 24L20 36" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Right bracket -->
+    <path d="M28 12L34 24L28 36" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
 // Save SVG files directly
 fs.writeFileSync(path.join(publicDir, 'summarize-icon.svg'), summarizeIcon);
 fs.writeFileSync(path.join(publicDir, 'draft-icon.svg'), draftIcon);
+fs.writeFileSync(path.join(publicDir, 'copilot-icon.svg'), copilotIcon);
 
 // Copy SVG files to dist
 fs.copyFileSync(
@@ -64,6 +73,10 @@ fs.copyFileSync(
 fs.copyFileSync(
     path.join(publicDir, 'draft-icon.svg'),
     path.join(distDir, 'draft-icon.svg')
+);
+fs.copyFileSync(
+    path.join(publicDir, 'copilot-icon.svg'),
+    path.join(distDir, 'copilot-icon.svg')
 );
 
 console.log('Build completed successfully!'); 

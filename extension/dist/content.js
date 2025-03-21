@@ -47,7 +47,7 @@ function createFloatingButton() {
     button.title = 'Please open an email to access Email Copilot';
     button.innerHTML = `
           <div class="btn-content">
-              <img src="${chrome.runtime.getURL('summarize-icon.svg')}" alt="Email Copilot" width="24" height="24">
+              <img src="${chrome.runtime.getURL('copilot-icon.svg')}" alt="Email Copilot" width="28" height="28">
           </div>
       `;
   
@@ -130,62 +130,62 @@ function createFloatingButton() {
   // Handle button click for both actions
   async function handleButtonClick(action) {
     try {
-      const emailContent = extractEmailContent();
-      if (!emailContent) {
-        showError('Could not extract email content');
-        return;
-      }
-  
-      const emailId = extractEmailId();
-      if (!emailId) {
-        showError('Could not extract email ID');
-        return;
-      }
-  
-      let instruction;
-      if (action === 'draft') {
-        instruction = await showInstructionModal();
-        if (instruction === null) return; // User cancelled
-      }
-  
-      // Show loading state immediately
-      const loadingUI = showLoading(
-        action === 'summarize' ? 'Generating summary...' : 'Drafting reply...'
-      );
-  
-      // Make API call
-      const response = await fetch(
-        `http://localhost:8000/api/v1/${action === 'summarize' ? 'summarize' : 'draft-reply'}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            thread_content: emailContent.body,
-            email_id: emailId,
-            instruction: instruction
-          })
+        const emailContent = extractEmailContent();
+        if (!emailContent) {
+            showError('Could not extract email content');
+            return;
         }
-      );
   
-      // Remove loading state
-      loadingUI.remove();
-  
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        if (response.status === 500 && errorData.detail?.includes('OpenAI')) {
-          throw new Error('LLM request failed');
-        } else {
-          throw new Error(`Request failed: ${errorData.detail || response.statusText}`);
+        const emailId = extractEmailId();
+        if (!emailId) {
+            showError('Could not extract email ID');
+            return;
         }
-      }
   
-      const data = await response.json();
-      showResponse(data.content, action);
+        let instruction;
+        if (action === 'draft') {
+            instruction = await showInstructionModal();
+            if (instruction === null) return; // User cancelled
+        }
+  
+        // Show loading state immediately
+        const loadingUI = showLoading(
+            action === 'summarize' ? 'Generating summary...' : 'Drafting reply...'
+        );
+  
+        // Make API call
+        const response = await fetch(
+            `http://localhost:8000/api/v1/${action === 'summarize' ? 'summarize' : 'draft-reply'}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    thread_content: emailContent.body,
+                    email_id: emailId,
+                    instruction: instruction
+                })
+            }
+        );
+  
+        // Remove loading state
+        loadingUI.remove();
+  
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            if (response.status === 500 && errorData.detail?.includes('OpenAI')) {
+                throw new Error('LLM request failed');
+            } else {
+                throw new Error(`Request failed: ${errorData.detail || response.statusText}`);
+            }
+        }
+  
+        const data = await response.json();
+        showResponse(data.content, action);
     } catch (error) {
-      console.error('Error:', error);
-      showError(error.message);
+        console.error('Error:', error);
+        showError(error.message);
     }
   }
   

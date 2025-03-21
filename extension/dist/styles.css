@@ -289,14 +289,16 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    border-left: 4px solid #dc3545;
+    border-left: 4px solid #dc3545; /* Default red border */
     min-width: 300px;
 }
 
+/* Orange border for LLM-related errors (e.g., OpenAI API failures) */
 .gmail-copilot-error-content.llm-error {
     border-left-color: #f59e0b;
 }
 
+/* Red border for network and other critical errors */
 .gmail-copilot-error-content.network-error {
     border-left-color: #dc3545;
 }

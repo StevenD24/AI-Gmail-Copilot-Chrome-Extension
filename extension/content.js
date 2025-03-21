@@ -47,7 +47,7 @@ function createFloatingButton() {
     button.title = 'Please open an email to access Email Copilot';
     button.innerHTML = `
           <div class="btn-content">
-              <img src="${chrome.runtime.getURL('summarize-icon.svg')}" alt="Email Copilot" width="24" height="24">
+              <img src="${chrome.runtime.getURL('copilot-icon.svg')}" alt="Email Copilot" width="28" height="28">
           </div>
       `;
   
@@ -130,15 +130,6 @@ function createFloatingButton() {
   // Handle button click for both actions
   async function handleButtonClick(action) {
     try {
-        // TEST ERROR MESSAGES - Comment out when done testing
-        if (action === 'summarize') {
-            showError('LLM request failed');
-            return;
-        } else if (action === 'draft') {
-            showError('Network error: Failed to connect to server');
-            return;
-        }
-
         const emailContent = extractEmailContent();
         if (!emailContent) {
             showError('Could not extract email content');
