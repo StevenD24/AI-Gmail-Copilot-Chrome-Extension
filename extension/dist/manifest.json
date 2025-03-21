@@ -11,10 +11,8 @@
     "https://mail.google.com/*"
   ],
   "action": {
-    "default_popup": "http://localhost:3000",
     "default_icon": {
-      "48": "summarize-icon.svg",
-      "128": "summarize-icon.svg"
+      "48": "summarize-icon.svg"
     }
   },
   "content_scripts": [
