@@ -2,10 +2,10 @@ from pydantic_settings import BaseSettings
 from functools import lru_cache
 
 class Settings(BaseSettings):
-    MONGODB_URL: str = "mongodb://localhost:27017"
-    DATABASE_NAME: str = "gmail_copilot"
+    MONGODB_URL: str
+    DATABASE_NAME: str
     OPENAI_API_KEY: str
-    MODEL_NAME: str = "gpt-3.5-turbo"
+    MODEL_NAME: str
     
     class Config:
         env_file = ".env"
