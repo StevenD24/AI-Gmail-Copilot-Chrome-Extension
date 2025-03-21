@@ -31,6 +31,15 @@ fs.copyFileSync(
     path.join(distDir, 'styles.css')
 );
 
+// Copy icon.png if it exists
+const iconPath = path.join(__dirname, 'public', 'icon.png');
+if (fs.existsSync(iconPath)) {
+    fs.copyFileSync(
+        iconPath,
+        path.join(distDir, 'icon.png')
+    );
+}
+
 // Create simple SVG icons
 const summarizeIcon = `<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect width="48" height="48" rx="8" fill="#0078d4"/>

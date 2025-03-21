@@ -12,10 +12,7 @@
   ],
   "action": {
     "default_popup": "http://localhost:3000",
-    "default_icon": {
-      "48": "summarize-icon.svg",
-      "128": "summarize-icon.svg"
-    }
+    "default_icon": "icon.png"
   },
   "content_scripts": [
     {
@@ -25,11 +22,11 @@
     }
   ],
   "icons": {
-    "48": "summarize-icon.svg",
-    "128": "summarize-icon.svg"
+    "48": "icon.png",
+    "128": "icon.png"
   },
   "web_accessible_resources": [{
-    "resources": ["summarize-icon.svg", "draft-icon.svg", "*.svg"],
+    "resources": ["icon.png", "*.svg"],
     "matches": ["https://mail.google.com/*"]
   }]
 }
