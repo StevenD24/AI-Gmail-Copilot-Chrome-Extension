@@ -171,6 +171,7 @@
     align-items: center;
     justify-content: center;
     z-index: 10000;
+    padding: 20px;
 }
 
 .gmail-copilot-modal-content {
@@ -178,59 +179,80 @@
     padding: 24px;
     border-radius: 8px;
     max-width: 500px;
-    width: 90%;
+    width: 100%;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .gmail-copilot-modal-content h3 {
     margin: 0 0 16px;
     color: #333;
+    font-size: 18px;
 }
 
 .gmail-copilot-modal-content p {
     margin: 0 0 12px;
     color: #666;
+    font-size: 14px;
 }
 
 .gmail-copilot-modal-content textarea {
     width: 100%;
-    min-height: 100px;
+    min-height: 120px;
+    max-height: 300px;
     padding: 12px;
     border: 1px solid #dee2e6;
     border-radius: 4px;
     margin-bottom: 16px;
     resize: vertical;
     font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    box-sizing: border-box;
+}
+
+.gmail-copilot-modal-content textarea:focus {
+    outline: none;
+    border-color: #0078d4;
+    box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
 }
 
 .gmail-copilot-modal-buttons {
     display: flex;
     gap: 12px;
     justify-content: flex-end;
+    margin-top: 8px;
 }
 
-.gmail-copilot-modal-buttons .gmail-copilot-btn {
-    width: auto;
-    height: auto;
+.gmail-copilot-modal-buttons button {
     padding: 8px 16px;
     border-radius: 4px;
     font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease-in-out;
 }
 
-.gmail-copilot-modal-buttons .cancel-btn {
-    background-color: #6c757d;
+.gmail-copilot-cancel-btn {
+    background-color: #f0f0f0;
+    color: #333;
 }
 
-.gmail-copilot-modal-buttons .cancel-btn:hover {
-    background-color: #5a6268;
+.gmail-copilot-cancel-btn:hover {
+    background-color: #e0e0e0;
 }
 
-.gmail-copilot-modal-buttons .submit-btn {
-    background-color: #28a745;
+.gmail-copilot-submit-btn {
+    background-color: #0078d4;
+    color: white;
 }
 
-.gmail-copilot-modal-buttons .submit-btn:hover {
-    background-color: #218838;
+.gmail-copilot-submit-btn:hover {
+    background-color: #006cbd;
 }
 
 /* Error UI Styles */
@@ -277,4 +299,40 @@
 
 .gmail-copilot-close:hover {
     background-color: #006cbd;
-} 
+}
+
+/* Loading UI Styles */
+.gmail-copilot-loading {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  color: #fff;
+  padding: 30px 40px;
+  border-radius: 8px;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.gmail-copilot-loading.fade-in {
+  opacity: 1;
+}
+
+.spinner {
+  border: 6px solid rgba(255,255,255,0.3);
+  border-top: 6px solid #fff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
