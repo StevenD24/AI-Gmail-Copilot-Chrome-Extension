@@ -1,0 +1,17 @@
+{
+  "name": "gmail-copilot-extension",
+  "version": "1.0.0",
+  "description": "AI-powered Gmail assistant Chrome extension",
+  "scripts": {
+    "build": "node build.js",
+    "package": "npm run build && cd dist && zip -r ../gmail-copilot.zip ."
+  },
+  "devDependencies": {
+    "fs-extra": "^11.2.0"
+  },
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "svgdom": "^0.1.20",
+    "svg2canvas": "^0.0.11"
+  }
+} 

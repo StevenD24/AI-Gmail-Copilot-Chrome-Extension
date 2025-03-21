@@ -32,7 +32,7 @@ async def summarize_email(request: EmailRequest, db=Depends(get_database)):
             }
         )
 
-        return EmailResponse(content=summary, request_id=request_log.id)
+        return EmailResponse(content=summary.text, request_id=request_log.id)
 
     except Exception as e:
         # Update log with error
@@ -73,7 +73,7 @@ async def create_draft_reply(request: EmailRequest, db=Depends(get_database)):
             }
         )
 
-        return EmailResponse(content=reply, request_id=request_log.id)
+        return EmailResponse(content=reply.text, request_id=request_log.id)
 
     except Exception as e:
         # Update log with error
