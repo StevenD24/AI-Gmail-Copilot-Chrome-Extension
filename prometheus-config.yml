@@ -1,0 +1,28 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+      
+  - job_name: 'fastapi'
+    static_configs:
+      - targets: ['host.docker.internal:8000']  # This allows Prometheus to access your host machine's localhost
+      
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+        replacement: 'host_machine'
+        
+  - job_name: 'mac-disk'
+    static_configs:
+      - targets: ['host.docker.internal:9200']
+      
+  - job_name: 'server-health'
+    static_configs:
+      - targets: ['host.docker.internal:9201'] 

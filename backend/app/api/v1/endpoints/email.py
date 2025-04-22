@@ -86,4 +86,4 @@ async def create_draft_reply(request: EmailRequest, db=Depends(get_database)):
                 }
             }
         )
-        raise HTTPException(status_code=500, detail=str(e)) 
+        raise HTTPException(status_code=500, detail=str(e))
