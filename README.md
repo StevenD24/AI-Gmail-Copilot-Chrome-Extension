@@ -1,12 +1,20 @@
-# Gmail Copilot Extension
+# Gmail Copilot Chrome Extension
 
-A Chrome extension that provides AI-powered email thread summaries and automated reply drafting capabilities for Gmail.
+Gmail Copilot Extension is a Chrome extension that enhances Gmail with AI-powered email thread summaries and automated reply drafting. It uses advanced language models to help you manage your inbox efficiently and communicate effectively.
+
+Key Features:
+- **AI Summaries:** Quickly generate concise summaries of long email threads.
+- **Automated Replies:** Draft context-aware email responses with AI.
+- **Seamless Gmail Integration:** Use directly within the Gmail interface.
+- **Customizable Backend:** Powered by Python FastAPI and MongoDB for flexibility.
 
 ## Prerequisites
 
 - Python 3.8+
+- FastAPI
 - MongoDB
 - Chrome browser
+- OpenAI API (Any LLM works)
 
 ## Installation Instructions
 
